@@ -18,5 +18,10 @@ public class ChatBot {
         }
         int age = (remainders[0] * 70 + remainders[1] * 21 + remainders[2] * 15) % 105;
         System.out.println(String.format("Your age is %d; that's a good time to start programming!",age));
+        System.out.println("Now I will prove to you that I can count to any number you want!");
+        int userInpMaxNumber = scn.nextInt();
+        for (int i=0;i<userInpMaxNumber+1;i++){
+            System.out.println(String.format("%d !",i));
+        }
     }
 }
