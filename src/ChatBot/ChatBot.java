@@ -23,5 +23,18 @@ public class ChatBot {
         for (int i=0;i<userInpMaxNumber+1;i++){
             System.out.println(String.format("%d !",i));
         }
+        System.out.println("""
+                Choose correct answer!
+                1. Wrong answer
+                2. Wrong answer
+                3. Correct answer
+                4. Wrong answer""");
+        int userQuestAnswer = 0;
+        while (userQuestAnswer!=3){
+            userQuestAnswer = scn.nextInt();
+            if (userQuestAnswer == 3) System.out.println("Correct");
+            else System.out.println("Wrong");
+        }
+        System.out.println("Goodbye, have a nice day!");
     }
 }
