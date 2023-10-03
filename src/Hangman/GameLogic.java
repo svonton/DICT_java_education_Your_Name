@@ -24,13 +24,12 @@ public class GameLogic {
             System.out.print("Input a letter: ");
             String uInp = userInput();
             if (isCorrect(uInp)) {
+                alreadyGuessedLetter.add(uInp);
                 if(secretWord.contains(uInp)){
                     ArrayList<Integer> allIndex = allGuessedIndex(uInp);
-                    alreadyGuessedLetter.add(uInp);
                     System.out.println(hintMaker(uInp,allIndex));
                 }else {
                     System.out.println("That letter doesn't appear in the word");
-                    alreadyGuessedLetter.add(uInp);
                     userHealth--;
                 }
             }
