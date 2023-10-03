@@ -10,6 +10,7 @@ public class GameLogic {
     private String[] secretWordArr = {"java", "javascript","kotlin","python"};
     private String secretWord = secretWordArr[rnd.nextInt(secretWordArr.length)];
     private StringBuilder currentSecretWord = new StringBuilder(secretWord);
+    private ArrayList<String> alreadyGuessedLetter = new ArrayList<>();
     private int userHealth = 8;
     public void greeting(){
         System.out.println("HANGMAN");
@@ -22,10 +23,18 @@ public class GameLogic {
         while (userHealth!=0){
             System.out.print("Input a letter: ");
             String uInp = userInput();
-            if (!isCorrect(uInp)) System.out.println("That letter doesn't appear in the word");
-            ArrayList<Integer> allIndex = allGuessedIndex(uInp);
-            System.out.println(hintMaker(uInp,allIndex));
-            userHealth--;
+            if (!isCorrect(uInp)) {
+                System.out.println("That letter doesn't appear in the word");
+                userHealth--;
+            }
+            else{
+                if (!alreadyGuessedLetter.contains(uInp)){
+                    ArrayList<Integer> allIndex = allGuessedIndex(uInp);
+                    alreadyGuessedLetter.add(uInp);
+                    System.out.println(hintMaker(uInp,allIndex));
+                }
+                else System.out.println("No improvements");
+            }
         }
         System.out.println("Thanks for playing!\n" +
                 "We'll see how well you did in the next stage\n");
