@@ -1,10 +1,13 @@
 package Hangman;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class GameLogic {
     private Scanner scn = new Scanner(System.in);
-    private String secretWord = "java";
+    private Random rnd = new Random();
+    private String[] secretWordArr = {"java", "javasript","kotlin","python"};
+    private String secretWord = secretWordArr[rnd.nextInt(secretWordArr.length)];
     public void greeting(){
         System.out.println("HANGMAN");
     }
