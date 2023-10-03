@@ -1,5 +1,6 @@
 package Hangman;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -8,25 +9,42 @@ public class GameLogic {
     private Random rnd = new Random();
     private String[] secretWordArr = {"java", "javascript","kotlin","python"};
     private String secretWord = secretWordArr[rnd.nextInt(secretWordArr.length)];
+    private StringBuilder currentSecretWord = new StringBuilder(secretWord);
+    private int userHealth = 8;
     public void greeting(){
         System.out.println("HANGMAN");
     }
 
     public void gameAction(){
         greeting();
-        System.out.print(String.format("Guess the word %s: ",hintMaker(secretWord)));
-        String uInp = userInput();
-        if (isCorrect(uInp)) System.out.println("You survived!");
-        else System.out.println("You lost!");
+        System.out.println(currentSecretWord.replace(0,secretWord.length(),
+                new String(new char[secretWord.length()]).replace("\0", "-")));
+        while (userHealth!=0){
+            System.out.print("Input a letter: ");
+            String uInp = userInput();
+            if (!isCorrect(uInp)) System.out.println("That letter doesn't appear in the word");
+            ArrayList<Integer> allIndex = allGuessedIndex(uInp);
+            System.out.println(hintMaker(uInp,allIndex));
+            userHealth--;
+        }
+        System.out.println("Thanks for playing!\n" +
+                "We'll see how well you did in the next stage\n");
     }
-
-    private String hintMaker(String inp){
-        StringBuilder hint = new StringBuilder(inp);
-        hint.replace(2,inp.length(),new String(new char[inp.length()-2]).replace("\0", "-"));
-        return hint.toString();
+    private ArrayList<Integer> allGuessedIndex(String inp){
+        int index = secretWord.indexOf(inp);
+        ArrayList<Integer> allIndex = new ArrayList<>();
+        while (index >= 0) {
+            allIndex.add(index);
+            index = secretWord.indexOf(inp, index + 1);
+        }
+        return allIndex;
+    }
+    private String hintMaker(String inp, ArrayList<Integer> index){
+        if (!index.isEmpty())for (int curIndex : index)currentSecretWord.replace(curIndex,curIndex+1,inp);
+        return currentSecretWord.toString();
     }
     private Boolean isCorrect(String inp){
-        if (inp.contains(secretWord)) return Boolean.TRUE;
+        if (secretWord.contains(inp)) return Boolean.TRUE;
         else return Boolean.FALSE;
     }
     private String userInput(){
