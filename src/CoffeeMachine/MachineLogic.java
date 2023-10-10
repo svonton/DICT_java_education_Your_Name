@@ -11,12 +11,14 @@ public class MachineLogic {
     private int coffeeBeans;
     private int cups;
     private int money;
+    private boolean exitStatus;
     public MachineLogic(){
         this.milk = 540;
         this.coffeeBeans = 120;
         this.water = 400;
         this.cups = 9;
         this.money = 550;
+        this.exitStatus = false;
     }
     private boolean isPossible(int uWater, int uMilk, int uCoffeeBeans){
         if (uWater>water){System.out.println("Please restore water");return false;}
@@ -37,8 +39,10 @@ public class MachineLogic {
         }
     }
     private void buyMenu(){
-        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
-        int uCoffeeType = Integer.parseInt(userInput());
+        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back – to main menu:");
+        String uInp = userInput();
+        if(uInp.equals("back"))return;
+        int uCoffeeType = Integer.parseInt(uInp);
         switch (uCoffeeType) {
             case 1 -> coffeeCook(250,0,16,4);
             case 2 -> coffeeCook(350,75,20,7);
@@ -72,20 +76,21 @@ public class MachineLogic {
                 %d of money""",water,milk,coffeeBeans,cups,money));
     }
     private void machineMenu(String uChoice){
-
         switch (uChoice) {
             case "buy" -> buyMenu();
             case "fill" -> fillAction();
             case "take" -> takeAction();
             case "remaining" -> remainingResources();
+            case "exit" -> exitStatus=true;
             default -> System.out.println(String.format("Unknown command: %s",uChoice));
         }
     }
 
     public void machineAction(){
-        remainingResources();
-        System.out.println("Write action (buy, fill, take):");
-        machineMenu(userInput());
+        while (!exitStatus){
+            System.out.println("Write action (buy, fill, take, remaining, exit):");
+            machineMenu(userInput());
+        }
     }
 
     private String userInput(){
