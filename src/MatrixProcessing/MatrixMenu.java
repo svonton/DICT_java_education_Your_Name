@@ -7,6 +7,7 @@ public class MatrixMenu {
                 3.\tMultiply matrices
                 4.\tTranspose matrix
                 5.\tCalculate a determinant
+                6.\tInverse matrix
                 0.\tExit""";
     String menuTransposeList = """
             1.\tMain diagonal
@@ -23,6 +24,7 @@ public class MatrixMenu {
                 case 3 -> matrixLogic.matrixMultiply();
                 case 4 -> matrixTransposeMenu(matrixLogic);
                 case 5 -> matrixLogic.determinantOfMatrix();
+                case 6 -> matrixLogic.inverseMatrix();
                 case 0 -> {
                     return;
                 }
