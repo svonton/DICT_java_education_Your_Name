@@ -20,8 +20,21 @@ public class MatrixLogic {
         }
         matrixPrint(matrixSum);
     }
+    public void matrixConstMultiply(){
+        int[][] matrix1=userMatrix();
+        System.out.println("input constant");
+        int userConst = Integer.parseInt(userInput());
+        int[][] matrixConstMultiply = new int[matrix1.length][matrix1[0].length];
+
+        for (int i =0; i<matrix1.length;i++){
+            for (int j =0; j<matrix1[0].length;j++){
+                matrixConstMultiply[i][j] = matrix1[i][j]*userConst;
+            }
+        }
+        matrixPrint(matrixConstMultiply);
+    }
     private void matrixPrint(int[][] matrix){
-        System.out.println("The sum of the given matrices is: ");
+        System.out.println("The result matrix is: ");
         for(int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 System.out.print(matrix[i][j] + "   ");
