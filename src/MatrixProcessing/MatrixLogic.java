@@ -1,11 +1,9 @@
 package MatrixProcessing;
 
-import java.util.Scanner;
 public class MatrixLogic {
-    private Scanner scn = new Scanner(System.in);
 
-    public void matrixSum(){
-        int[][] matrix1= userMatrix();
+    void matrixSum(){
+        int[][] matrix1=userMatrix();
         int[][] matrix2=userMatrix();
         if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length) {
             System.out.println("matrix size not equal");
@@ -20,7 +18,7 @@ public class MatrixLogic {
         }
         matrixPrint(matrixSum);
     }
-    public void matrixConstMultiply(){
+    void matrixConstMultiply(){
         int[][] matrix1=userMatrix();
         System.out.println("input constant");
         int userConst = Integer.parseInt(userInput());
@@ -33,6 +31,23 @@ public class MatrixLogic {
         }
         matrixPrint(matrixConstMultiply);
     }
+    void matrixMultiply() {
+        int[][] matrix1=userMatrix();
+        int[][] matrix2=userMatrix();
+        if (matrix2[0].length != matrix1.length) {
+            System.out.println("matrix size not equal");
+            return;
+        }
+        int matrixMulti[][] = new int[matrix1.length][matrix2[0].length];
+        // Multiply the two matrices
+        for (int i = 0; i < matrix1.length; i++) {
+            for (int j = 0; j < matrix2[0].length; j++) {
+                for (int k = 0; k < matrix2.length; k++)
+                    matrixMulti[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
+        matrixPrint(matrixMulti);
+    }
     private void matrixPrint(int[][] matrix){
         System.out.println("The result matrix is: ");
         for(int i = 0; i < matrix.length; i++) {
@@ -41,9 +56,10 @@ public class MatrixLogic {
             }
             System.out.println();
         }
+        System.out.println();
     }
     private int[][] userMatrix(){
-        System.out.println("input matrix size MxN");
+        System.out.println("input matrix size ROWSxCOLUMNS");
         String[] matrixSize = userInput().split(" ");
         int[][] matrix = new int[Integer.parseInt(matrixSize[0])][Integer.parseInt(matrixSize[1])];
         System.out.println("input matrix rows values");
@@ -55,8 +71,8 @@ public class MatrixLogic {
         }
         return matrix;
     }
-    private String userInput(){
+    String userInput(){
         System.out.print(">>> ");
-        return scn.nextLine();
+        return MatrixProcessing.scn.nextLine();
     }
 }
