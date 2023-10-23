@@ -39,7 +39,6 @@ public class MatrixLogic {
             return;
         }
         int matrixMulti[][] = new int[matrix1.length][matrix2[0].length];
-        // Multiply the two matrices
         for (int i = 0; i < matrix1.length; i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 for (int k = 0; k < matrix2.length; k++)
@@ -47,6 +46,61 @@ public class MatrixLogic {
             }
         }
         matrixPrint(matrixMulti);
+    }
+    void flipVertical() {
+        int[][] matrix1=userMatrix();
+        int size = matrix1.length;
+        for (int i=0; i<size; i++) {
+            for (int j=0; j<size/2; j++) {
+                int tmp = matrix1[i][size-1-j];
+                matrix1[i][size-1-j] = matrix1[i][j];
+                matrix1[i][j] = tmp;
+            }
+        }
+        matrixPrint(matrix1);
+    }
+    void flipHorizontal() {
+        int[][] matrix1=userMatrix();
+        int size = matrix1.length;
+        for (int i=0; i<size/2; i++) {
+            for (int j=0; j<size; j++) {
+                int tmp = matrix1[size-1-i][j];
+                matrix1[size-1-i][j] = matrix1[i][j];
+                matrix1[i][j] = tmp;
+            }
+        }
+        matrixPrint(matrix1);
+    }
+    void transpose() {
+        int[][] matrix1=userMatrix();
+        int size = matrix1.length;
+        for (int i=0; i<size-1; i++) {
+            for (int j=i+1; j<size; j++) {
+                int tmp = matrix1[i][j];
+                matrix1[i][j] = matrix1[j][i];
+                matrix1[j][i] = tmp;
+            }
+        }
+        matrixPrint(matrix1);
+    }
+    void rotate90_flipHorizontal() {
+        int[][] matrix1=userMatrix();
+        int size = matrix1.length;
+        int[][] temp = new int[size][size];
+
+        for (int i=0;i<size;i++)
+            for (int j=0;j<size;j++)
+                temp[i][j] = matrix1[size-1-j][i];
+
+        matrix1 = temp;
+        for (int i=0; i<size/2; i++) {
+            for (int j=0; j<size; j++) {
+                int tmp = matrix1[size-1-i][j];
+                matrix1[size-1-i][j] = matrix1[i][j];
+                matrix1[i][j] = tmp;
+            }
+        }
+        matrixPrint(matrix1);
     }
     private void matrixPrint(int[][] matrix){
         System.out.println("The result matrix is: ");
