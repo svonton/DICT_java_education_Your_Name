@@ -4,33 +4,71 @@ package CreditCalculator;
 import java.util.Scanner;
 
 public class CalculatorLogic {
-    double payment; // every month payment
-    double principal; // sum of credit
-    double month; //required month
-    double lastPayment;
-    public void calculation(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the loan principal:");
-        principal = Integer.parseInt(scanner.nextLine());
-        System.out.println("What do you want to calculate?\n" +
-                "type \"m\" – for number of monthly payments, \n" +
-                "type \"p\" – for the monthly payment:");
-        String uInp = scanner.nextLine();
-        switch (uInp){
-            case "m" -> {
-                System.out.println("Enter the monthly payment:");
-                payment = scanner.nextInt();
-                month = principal/payment;
-                System.out.println(String.format("It will take %d month to repay the loan",(int) Math.ceil(month)));
-            }
-            case "p" -> {
-                System.out.println("Enter the number of months:");
-                month = scanner.nextInt();
-                payment = Math.ceil(principal/month);
-                lastPayment = Math.ceil(principal - (month-1)*payment);
-                System.out.println(String.format("Your monthly payment = %d and the last payment = %d",
-                        (int) payment, (int) lastPayment));
-            }
+    double monthlyPayment; // every month payment - A
+    double loanPrincipal; // sum of credit - P
+    double numberOfMonth; //required month - n
+    double loanInterest; // for nominal calc 
+    double nominalLoanInterest; // - i
+    String mainMenu = """
+                What do you want to calculate?
+                type "n" for number of monthly payments,\s
+                type "a" for annuity monthly payment amount,\s
+                type "p" for loan principal:""";
+    Scanner scanner = new Scanner(System.in);
+    private void calculatorMenu(){
+        System.out.println(mainMenu);
+        switch (scanner.nextLine()){
+            case "n" -> numberOfMonthPayments();
+            case "a" -> annuityMonthlyPaymentAmount();
+            case "p" -> loanPrincipal();
         }
+    }
+    private void numberOfMonthPayments(){
+        System.out.println("Enter the loan principal");
+        loanPrincipal = scanner.nextDouble();
+        System.out.println("Enter the monthly payment:");
+        monthlyPayment = scanner.nextDouble();
+        System.out.println("Enter the loan interest:");
+        loanInterest = scanner.nextDouble();
+
+        nominalLoanInterest = loanInterest/(12*100);
+        double logCalc = monthlyPayment/(monthlyPayment-nominalLoanInterest*loanPrincipal);
+        double logBase = 1+nominalLoanInterest;
+        numberOfMonth = Math.log(logCalc)/Math.log(logBase);
+
+        double years = Math.ceil(numberOfMonth)/12;
+        double months = Math.ceil(numberOfMonth)%12;
+        System.out.println(String.format("It will take %d years and %d months to repay this loan!",
+                (int) years, (int) months));
+    }
+
+    private void annuityMonthlyPaymentAmount(){
+        System.out.println("Enter the loan principal");
+        loanPrincipal = scanner.nextDouble();
+        System.out.println("Enter the number of periods:");
+        numberOfMonth = scanner.nextDouble();
+        System.out.println("Enter the loan interest:");
+        loanInterest = scanner.nextDouble();
+
+        nominalLoanInterest = loanInterest/(12*100);
+        double tempr = Math.pow((1+nominalLoanInterest),numberOfMonth);
+        monthlyPayment = loanPrincipal*((nominalLoanInterest*tempr)/(tempr-1));
+        System.out.println(String.format("Your monthly payment = %d!",(int) Math.ceil(monthlyPayment)));
+    }
+    private void loanPrincipal(){
+        System.out.println("Enter the annuity payment:");
+        monthlyPayment = scanner.nextDouble();
+        System.out.println("Enter the number of periods:");
+        numberOfMonth = scanner.nextDouble();
+        System.out.println("Enter the loan interest:");
+        loanInterest = scanner.nextDouble();
+
+        nominalLoanInterest = loanInterest/(12*100);
+        double tempr = Math.pow((1+nominalLoanInterest),numberOfMonth);
+        loanPrincipal = monthlyPayment/((nominalLoanInterest*tempr)/(tempr-1));
+        System.out.println(String.format("Your loan principal = %d!",(int) loanPrincipal));
+    }
+    public void calculation(){
+        calculatorMenu();
     }
 }
