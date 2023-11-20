@@ -1,18 +1,20 @@
 package CurrencyExchange;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class CurrencyExchange {
-    public static void main(String[] args){
+    public static void main(String[] args) throws JSONException, IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         CurrencyLogic currencyLogic = new CurrencyLogic();
         currencyLogic.start();
         while (currencyLogic.isRunning()){
-            currencyLogic.printUI();
-            if(!(currencyLogic.getCurrentState() == CurrencyLogicState.PRINT_RESULT)){
-                String uInp = scanner.nextLine();
-                currencyLogic.inputProcessing(uInp);
-            }
+            String uInp = scanner.nextLine();
+            if(Objects.equals(uInp, "")) break;
+            currencyLogic.inputProcessing(uInp);
         }
     }
 }
