@@ -1,6 +1,5 @@
 package WebPageScrapper;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class WebPageScraper {
