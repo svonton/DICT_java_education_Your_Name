@@ -1,23 +1,30 @@
 package WebPageScrapper;
 
-import org.json.JSONObject;
-
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 public class WebPageScraperLogic {
-    public void mainProcessing(String inp) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(inp)).build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        JSONObject jsonResponseResult = new JSONObject(response.body());
-        if(jsonResponseResult.keySet().contains("statusCode")){
-            if (jsonResponseResult.getInt("statusCode" ) == 404) System.out.println("Invalid quote resource!");
-        }else{
-            System.out.println(jsonResponseResult.get("content"));
+    public void mainProcessing(String inp) {
+        try {
+            if (!inp.contains("https://www.imdb.com/title/")) {
+                System.out.println("Invalid movie page!");
+                return;
+            }
+            Connection connection = Jsoup.connect(inp);
+            connection.header("Accept-Language", "en-US,en;q=0.5");
+            Document doc = connection.get();
+            Element metaDescription = doc.select("meta[name=description]").first();
+            if (metaDescription != null) {
+                String content = metaDescription.attr("content");
+                System.out.println(content);
+            } else {
+                System.out.println("Description not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
